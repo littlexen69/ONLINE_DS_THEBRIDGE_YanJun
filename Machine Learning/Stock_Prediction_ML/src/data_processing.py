@@ -1,22 +1,9 @@
 import pandas as pd
-import os
+
 from statsmodels.tsa.stattools import adfuller
+from statsmodels.graphics.tsaplots import plot_pacf
 
-
-from eodhd import APIClient
-
-api = APIClient(api_key='68a888ecbf2185.97717291')
-
-TICKERS = ["AAPL.US", "GOOGL.US", "TSLA.US", "JNJ.US", "JPM.US", "ITX.MC"]
-
-os.makedirs("../data", exist_ok=True)
-
-for i in TICKERS:
-    df = pd.DataFrame(api.get_eod_historical_stock_market_data(symbol= i, period='d', from_date='2010-01-01'))
-    df.to_csv(f'../data/{i}.csv', index=False)
-
-df = pd.read_csv('../data/AAPL.US.csv', parse_dates=['date'])    #asegurar que los datos estan en orden
-df = df.sort_values('date').reset_index(drop=True)
+df = pd.read_csv('..data/raw/AAPL.US.csv')
 
 print('p-value:', adfuller(df.adjusted_close)[1])
 
