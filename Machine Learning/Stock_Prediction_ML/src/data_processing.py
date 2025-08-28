@@ -3,7 +3,8 @@ import pandas as pd
 from statsmodels.tsa.stattools import adfuller
 from statsmodels.graphics.tsaplots import plot_pacf
 
-df = pd.read_csv('..data/raw/AAPL.US.csv')
+df = pd.read_csv('..data/raw/AAPL.US.csv', parse_dates=['date'])
+df = df.sort_values('date').reset_index(drop=True)
 
 print('p-value:', adfuller(df.adjusted_close)[1])
 
