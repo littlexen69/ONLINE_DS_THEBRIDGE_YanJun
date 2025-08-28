@@ -1,11 +1,9 @@
 import numpy as np
-import pandas as pd
 import matplotlib.pyplot as plt
 
 from sklearn import metrics
-from sklearn.preprocessing import MinMaxScaler
 
-from training import train_test_split, xgb_prediction, feature_scaler, target_scaler, df, model, test_rmse, Y_test, predictions, last_row
+from training import train_test_split, xgb_prediction, target_scaler, df, model, test_rmse, Y_test, predictions, last_row
 
 def plot_values(df, percentage=0.2):
 
@@ -33,6 +31,11 @@ def plot_values(df, percentage=0.2):
     plt.show()
 
 plot_values(df, 0.2)
+
+plt.plot(Y_test.reshape(-1), label='Actual', color='k')
+plt.plot(predictions.reshape(-1), label='Predicted', color='y')
+plt.legend()
+plt.show()
 
 prediction = xgb_prediction(df.values, last_row.values[0][:-1])
 print(prediction)
