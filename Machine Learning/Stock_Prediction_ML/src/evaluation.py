@@ -5,18 +5,7 @@ import matplotlib.pyplot as plt
 from sklearn import metrics
 from sklearn.preprocessing import MinMaxScaler
 
-from training import train_test_split, xgb_prediction
-
-df = pd.read_csv('../data/processed/AAPL.US.csv')
-df.index = df["date"]
-df.drop("date", axis=1, inplace=True)
-
-last_row = df.tail(1)
-df.drop(df.tail(1).index, inplace=True)
-df.dropna(inplace=True)
-
-feature_scaler = MinMaxScaler()
-target_scaler = MinMaxScaler()
+from training import train_test_split, xgb_prediction, feature_scaler, target_scaler, df, model, test_rmse, Y_test, predictions, last_row
 
 def plot_values(df, percentage=0.2):
 
