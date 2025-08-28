@@ -1,6 +1,5 @@
 import numpy as np
 import pandas as pd
-import matplotlib.pyplot as plt
 
 from sklearn import metrics
 from sklearn.preprocessing import MinMaxScaler
@@ -48,8 +47,8 @@ def walk_forward_validation(data, percentage=0.2):
     history = [x for x in train]
 
     for i in range(len(test)):
-        test_X, test_Y = test[i, :-1], test[i, -1] 
-        pred = xgb_prediction(history, test_X) 
+        test_X, test_Y = test[i, :-1], test[i, -1]
+        pred = xgb_prediction(history, test_X)
         predictions.append(pred)
         history.append(test[i])
     
