@@ -28,9 +28,6 @@ def plot_values(df, percentage=0.2):
     train_predictions = target_scaler.inverse_transform(train_predictions.reshape(-1, 1))
     Y = target_scaler.inverse_transform(Y.reshape(-1, 1))
     train_rmse = metrics.root_mean_squared_error(Y, train_predictions)
-    
-    print(f"Training RMSE: {train_rmse}")
-    print(f"Testing RMSE: {test_rmse}")
 
     # plot actual vs. predicted
     # concatenar Y e Y_test para plotearlo junto
@@ -44,4 +41,6 @@ def plot_values(df, percentage=0.2):
     plt.show()
 
 prediction = xgb_prediction(df.values, last_row.values[0][:-1])
-print(prediction)
+print('Prediction: ',prediction)
+print(f"Training RMSE: {train_rmse}")
+print(f"Testing RMSE: {test_rmse}")
