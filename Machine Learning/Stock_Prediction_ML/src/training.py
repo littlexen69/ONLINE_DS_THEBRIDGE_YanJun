@@ -1,17 +1,26 @@
 import numpy as np
-import pandas as pd
 
 from sklearn import metrics
 from sklearn.preprocessing import MinMaxScaler
 from xgboost import XGBRegressor
 
-df = pd.read_csv('../data/processed/AAPL.US.csv')
-df.index = df["date"]
-df.drop("date", axis=1, inplace=True)
+from data_processing import df_aapl,df_googl,df_itx,df_jnj,df_jpm,df_tsla
 
-last_row = df.tail(1)
-df.drop(df.tail(1).index, inplace=True)
-df.dropna(inplace=True)
+def initialize(df):
+    df.index = df["date"]
+    df.drop("date", axis=1, inplace=True)
+
+    global last_row
+    last_row = df.tail(1)
+    df.drop(df.tail(1).index, inplace=True)
+    df.dropna(inplace=True)
+
+initialize(df_aapl)
+initialize(df_googl)
+initialize(df_itx)
+initialize(df_jnj)
+initialize(df_jpm)
+initialize(df_tsla)
 
 feature_scaler = MinMaxScaler()
 target_scaler = MinMaxScaler()
@@ -58,4 +67,14 @@ def walk_forward_validation(data, percentage=0.2):
 
     return test_rmse, Y_test, Y_pred
 
-test_rmse, Y_test, predictions = walk_forward_validation(df, 0.2)
+test_rmse_aapl, Y_test_aapl, predictions_aapl = walk_forward_validation(df_aapl, 0.2)
+
+test_rmse_googl, Y_test_googl, predictions_googl = walk_forward_validation(df_googl, 0.2)
+
+test_rmse_itx, Y_test_itx, predictions_itx = walk_forward_validation(df_itx, 0.2)
+
+test_rmse_jnj, Y_test_jnj, predictions_jnj = walk_forward_validation(df_jnj, 0.2)
+
+test_rmse_jpm, Y_test_jpm, predictions_jpm = walk_forward_validation(df_jpm, 0.2)
+
+test_rmse_tsla, Y_test_tsla, predictions_tsla = walk_forward_validation(df_tsla, 0.2)
