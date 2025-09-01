@@ -92,11 +92,6 @@ def feature_eng(df):
 
     df["target"] = df["adjusted_close"].shift(-1)
 
-    global last_row
-    last_row = df.tail(1)
-    df.drop(df.tail(1).index, inplace=True)
-    df.dropna(inplace=True)
-
     return df
 
 
