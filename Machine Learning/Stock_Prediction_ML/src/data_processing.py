@@ -45,7 +45,6 @@ def feature_eng(df):
     df.drop("date", axis=1, inplace=True)
 
     df.index = pd.to_datetime(df.index)
-    df = df.copy()
     df['dayofweek'] = df.index.dayofweek
     df['quarter'] = df.index.quarter
     df['month'] = df.index.month
