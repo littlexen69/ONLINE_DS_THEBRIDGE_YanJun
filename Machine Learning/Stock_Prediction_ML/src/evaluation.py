@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 
 from sklearn import metrics
 
-from training import train_test_split, xgb_prediction, target_scaler, df, model, test_rmse, Y_test, predictions, last_row
+from training import train_test_split, xgb_prediction, target_scaler, df, model, test_rmse, Y_test, predictions, last_row, df_aapl, model, test_rmse_aapl, Y_test_aapl, predictions_aapl, last_row
 
 def plot_values(df, percentage=0.2):
 
