@@ -10,17 +10,36 @@ def initialize(df):
     df.index = df["date"]
     df.drop("date", axis=1, inplace=True)
 
-    global last_row
-    last_row = df.tail(1)
-    df.drop(df.tail(1).index, inplace=True)
-    df.dropna(inplace=True)
-
 initialize(df_aapl)
 initialize(df_googl)
 initialize(df_itx)
 initialize(df_jnj)
 initialize(df_jpm)
 initialize(df_tsla)
+
+last_row_aapl = df_aapl.tail(1)
+df_aapl.drop(df_aapl.tail(1).index, inplace=True)
+df_aapl.dropna(inplace=True)
+
+last_row_googl = df_googl.tail(1)
+df_googl.drop(df_googl.tail(1).index, inplace=True)
+df_googl.dropna(inplace=True)
+
+last_row_itx = df_itx.tail(1)
+df_itx.drop(df_itx.tail(1).index, inplace=True)
+df_itx.dropna(inplace=True)
+
+last_row_jnj = df_jnj.tail(1)
+df_jnj.drop(df_jnj.tail(1).index, inplace=True)
+df_jnj.dropna(inplace=True)
+
+last_row_jpm = df_jpm.tail(1)
+df_jpm.drop(df_jpm.tail(1).index, inplace=True)
+df_jpm.dropna(inplace=True)
+
+last_row_tsla = df_tsla.tail(1)
+df_tsla.drop(df_tsla.tail(1).index, inplace=True)
+df_tsla.dropna(inplace=True)
 
 feature_scaler = MinMaxScaler()
 target_scaler = MinMaxScaler()
