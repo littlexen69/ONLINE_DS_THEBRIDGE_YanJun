@@ -1,13 +1,16 @@
 import numpy as np
 import matplotlib.pyplot as plt
+import os
+
 
 from sklearn import metrics
 
-from training import train_test_split, xgb_prediction, target_scaler, df, model, test_rmse, Y_test, predictions, last_row, df_aapl, model, test_rmse_aapl, Y_test_aapl, predictions_aapl, last_row
+from training import train_test_split, xgb_prediction, target_scaler, aapl_model, df_aapl, test_rmse_aapl, Y_test_aapl, predictions_aapl, last_row_aapl, df_googl, googl_model, test_rmse_googl, Y_test_googl, predictions_googl, last_row_googl, df_itx, itx_model ,test_rmse_itx, Y_test_itx, predictions_itx, last_row_itx, df_jnj, jnj_model ,test_rmse_jnj, Y_test_jnj, predictions_jnj, last_row_jnj, df_jpm, jpm_model, test_rmse_jpm, Y_test_jpm, predictions_jpm, last_row_jpm, df_tsla, tsla_model, test_rmse_tsla, Y_test_tsla, predictions_tsla, last_row_tsla
 
-def plot_values(df, percentage=0.2):
+def plot_values(df, model ,test_rmse, Y_test, predictions ,percentage=0.2):
 
-    train, test = train_test_split(df, percentage)
+    global train, test
+    train, test = train_test_split(df ,percentage)
     X, Y = train[:, :-1], train[:, -1]
     train_predictions = model.predict(X)
     
@@ -30,12 +33,24 @@ def plot_values(df, percentage=0.2):
     plt.legend()
     plt.show()
 
-plot_values(df, 0.2)
+plot_values(df_aapl,aapl_model,test_rmse_aapl,Y_test_aapl,predictions_aapl)
 
-plt.plot(Y_test.reshape(-1), label='Actual', color='k')
-plt.plot(predictions.reshape(-1), label='Predicted', color='y')
-plt.legend()
-plt.show()
+plot_values(df_googl,googl_model,test_rmse_googl,Y_test_googl,predictions_googl)
 
-prediction = xgb_prediction(df.values, last_row.values[0][:-1])
-print(prediction)
+plot_values(df_itx,itx_model,test_rmse_itx,Y_test_itx,predictions_itx)
+
+plot_values(df_jnj,jnj_model,test_rmse_jnj,Y_test_jnj,predictions_jnj)
+
+plot_values(df_jpm,jpm_model,test_rmse_jpm,Y_test_jpm,predictions_jpm)
+
+plot_values(df_tsla,tsla_model,test_rmse_tsla,Y_test_tsla,predictions_tsla)
+
+
+
+# plt.plot(Y_test.reshape(-1), label='Actual', color='k')
+# plt.plot(predictions.reshape(-1), label='Predicted', color='y')
+# plt.legend()
+# plt.show()
+
+prediction_aapl = xgb_prediction(df_aapl.values, last_row_aapl.values[0][:-1])
+print(prediction_aapl)
