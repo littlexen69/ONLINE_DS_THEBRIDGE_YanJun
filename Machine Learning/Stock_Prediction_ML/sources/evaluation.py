@@ -54,3 +54,18 @@ plot_values(df_tsla,tsla_model,test_rmse_tsla,Y_test_tsla,predictions_tsla)
 
 prediction_aapl = xgb_prediction(df_aapl.values, last_row_aapl.values[0][:-1])
 print(prediction_aapl)
+
+prediction_googl = xgb_prediction(df_googl.values, last_row_googl.values[0][:-1])
+print(prediction_googl)
+
+prediction_itx = xgb_prediction(df_itx.values, last_row_itx.values[0][:-1])
+print(prediction_itx)
+
+prediction_jnj = xgb_prediction(df_jnj.values, last_row_jnj.values[0][:-1])
+print(prediction_jnj)
+
+prediction_jpm = xgb_prediction(df_jpm.values, last_row_jpm.values[0][:-1])
+print(prediction_jpm)
+
+prediction_tsla = xgb_prediction(df_tsla.values, last_row_tsla.values[0][:-1])
+print(prediction_tsla)
