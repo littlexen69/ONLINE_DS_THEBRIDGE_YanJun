@@ -224,7 +224,3 @@ Para cada *ticker* se generan, entre otras, las siguientes *features*:
 
 ---
 
-## Licencia
-
-Indica aquí la licencia del proyecto (por ejemplo, MIT).
-
