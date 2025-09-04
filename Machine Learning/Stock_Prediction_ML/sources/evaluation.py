@@ -2,7 +2,6 @@ import numpy as np
 import matplotlib.pyplot as plt
 import os
 
-
 from sklearn import metrics
 
 from training import train_test_split, xgb_prediction, target_scaler, aapl_model, df_aapl, test_rmse_aapl, Y_test_aapl, predictions_aapl, last_row_aapl, df_googl, googl_model, test_rmse_googl, Y_test_googl, predictions_googl, last_row_googl, df_itx, itx_model ,test_rmse_itx, Y_test_itx, predictions_itx, last_row_itx, df_jnj, jnj_model ,test_rmse_jnj, Y_test_jnj, predictions_jnj, last_row_jnj, df_jpm, jpm_model, test_rmse_jpm, Y_test_jpm, predictions_jpm, last_row_jpm, df_tsla, tsla_model, test_rmse_tsla, Y_test_tsla, predictions_tsla, last_row_tsla
