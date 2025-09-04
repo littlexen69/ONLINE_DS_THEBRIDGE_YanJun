@@ -124,7 +124,7 @@ python evaluation.py
 
 ## App Streamlit
 
-Ejecuta la app:
+Ejecuta la app en alguna terminal de Windows (Powershell, cmd,...):
 
 ```bash
 streamlit run main.py
