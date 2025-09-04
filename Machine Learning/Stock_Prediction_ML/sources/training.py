@@ -59,7 +59,6 @@ def xgb_prediction(train, value):
     return prediction[0] 
 
 def walk_forward_validation(data, percentage=0.2):
-    # In this case -1 is the target column (last one)
     train, test = train_test_split(data, percentage)
     predictions = []
     history = [x for x in train]
