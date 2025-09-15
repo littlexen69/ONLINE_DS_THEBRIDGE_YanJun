@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="es" class="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Asistente Financiero</title>
+
+  <!-- Tailwind (CDN) -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    // Tailwind dark mode por clase
+    tailwind.config = { darkMode: 'class' }
+  </script>
+
+  <!-- Markdown parser -->
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+
+  <style>
+    /* Estilos para contenido Markdown */
+    .logo { font-size: 1.75rem; font-weight: 800; letter-spacing: -0.02em }
+    .logo .dollar { color: #22c55e; font-weight: 900 }
+    .md { line-height: 1.6; }
+    .md h1, .md h2, .md h3 { font-weight:700; margin:.25rem 0 .5rem }
+    .md h2 { font-size:1.125rem }
+    .md ul { list-style:none; padding-left:0 }
+    .md li { margin:.25rem 0 }
+    .md table { width:100%; border-collapse:collapse; margin:.5rem 0 }
+    .md th, .md td { border:1px solid rgba(255,255,255,.2); padding:.5rem; text-align:left }
+    .md th { background:rgba(255,255,255,.08) }
+    /* tema claro para tablas */
+    :root:not(.dark) .md th, :root:not(.dark) .md td { border-color: rgba(0,0,0,.15) }
+    :root:not(.dark) .md th { background: rgba(0,0,0,.05) }
+
+    /* Burbuja del mensaje + timestamp */
+    .bubble { position: relative; }
+    .timechip {
+      display:block; font-size:.70rem; opacity:.7; margin-top:.3rem;
+    }
+
+    /* Input con botón dentro */
+    .input-wrap { position: relative; }
+    .input-wrap input {
+      padding-right: 3.5rem; /* espacio para el botón */
+    }
+    .input-wrap button.send {
+      position:absolute; right:.375rem; top:50%; transform:translateY(-50%);
+      height:2.25rem; padding:0 .8rem;
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col bg-zinc-50 text-zinc-900 dark:bg-zinc-950 dark:text-zinc-100">
+
+  <!-- Barra superior -->
+    <header class="w-full border-b border-black/10 dark:border-white/10">
+        <div class="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between">
+            <!-- Logo con S=$ -->
+            <h1 class="logo">
+            INVE<span class="dollar">$</span>TKING
+            </h1>
+
+            <div class="flex items-center gap-2">
+            <button id="themeBtn"
+                class="rounded-lg border border-black/10 dark:border-white/10 px-3 py-1.5 text-sm hover:bg-black/5 dark:hover:bg-white/10">
+                Cambiar tema
+            </button>
+            <button id="clearBtn"
+                class="rounded-lg border border-black/10 dark:border-white/10 px-3 py-1.5 text-sm hover:bg-black/5 dark:hover:bg-white/10">
+                Borrar chat
+            </button>
+            </div>
+        </div>
+    </header>
+
+
+  <!-- Portada: elegir rol -->
+  <main id="home" class="flex-1 flex items-center justify-center">
+    <div class="w-full max-w-6xl px-4 py-8">
+      <h1 class="text-2xl sm:text-3xl font-bold mb-6">Elige un rol</h1>
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
+        <button data-role="t1"
+          class="group rounded-2xl p-[2px] bg-gradient-to-br from-amber-400 to-orange-500 shadow-lg hover:scale-[1.01] transition">
+          <div class="rounded-2xl h-full w-full bg-white/70 dark:bg-zinc-900/80 backdrop-blur p-6 text-left">
+            <div class="text-4xl mb-3">💡</div>
+            <h3 class="text-lg font-semibold">Finanzas Personales</h3>
+            <p class="text-sm opacity-80 mt-1">Organiza tu dinero antes de invertir.</p>
+            <div class="mt-4 text-sm opacity-70 group-hover:opacity-100">Elegir →</div>
+          </div>
+        </button>
+
+        <button data-role="t2"
+          class="group rounded-2xl p-[2px] bg-gradient-to-br from-blue-500 to-indigo-600 shadow-lg hover:scale-[1.01] transition">
+          <div class="rounded-2xl h-full w-full bg-white/70 dark:bg-zinc-900/80 backdrop-blur p-6 text-left">
+            <div class="text-4xl mb-3">📈</div>
+            <h3 class="text-lg font-semibold">Mercados Financieros</h3>
+            <p class="text-sm opacity-80 mt-1">Acciones, bonos, ETFs e indexados.</p>
+            <div class="mt-4 text-sm opacity-70 group-hover:opacity-100">Elegir →</div>
+          </div>
+        </button>
+
+        <button data-role="t3"
+          class="group rounded-2xl p-[2px] bg-gradient-to-br from-emerald-500 to-teal-600 shadow-lg hover:scale-[1.01] transition">
+          <div class="rounded-2xl h-full w-full bg-white/70 dark:bg-zinc-900/80 backdrop-blur p-6 text-left">
+            <div class="text-4xl mb-3">🏠</div>
+            <h3 class="text-lg font-semibold">Bienes Reales y Alternativos</h3>
+            <p class="text-sm opacity-80 mt-1">Inmuebles, oro, cripto y más.</p>
+            <div class="mt-4 text-sm opacity-70 group-hover:opacity-100">Elegir →</div>
+          </div>
+        </button>
+      </div>
+    </div>
+  </main>
+
+  <!-- Chat full-screen -->
+  <section id="chat" class="hidden flex-1 flex flex-col">
+    <div class="max-w-5xl mx-auto w-full px-4 py-3 flex items-center gap-3">
+      <button id="backBtn"
+        class="rounded-lg border border-black/10 dark:border-white/10 px-3 py-1.5 text-sm hover:bg-black/5 dark:hover:bg-white/10">
+        ← Volver
+      </button>
+      <div id="roleBadge"
+        class="rounded-lg px-3 py-1.5 text-sm border border-black/10 dark:border-white/10">
+        Rol
+      </div>
+      <div id="latency" class="text-xs opacity-60"></div>
+    </div>
+
+    <!-- Mensajes -->
+    <div id="messages"
+      class="flex-1 overflow-y-auto max-w-5xl mx-auto w-full px-4 pb-4 space-y-3">
+    </div>
+
+    <!-- Input sticky abajo -->
+    <div class="border-t border-black/10 dark:border-white/10">
+      <form id="chatForm" class="max-w-5xl mx-auto w-full p-4">
+        <div class="input-wrap">
+          <input id="input"
+            class="w-full rounded-xl border border-black/10 dark:border-white/10 bg-white dark:bg-zinc-900 px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-black/20 dark:focus:ring-white/20"
+            placeholder="Escribe tu pregunta…" autocomplete="off" />
+          <button type="submit" class="send rounded-lg bg-zinc-900 text-white dark:bg-white dark:text-zinc-900 text-sm font-semibold">
+            Enviar
+          </button>
+        </div>
+        <p class="text-[11px] opacity-60 mt-2">
+          Uso educativo; no constituye asesoramiento financiero.
+        </p>
+      </form>
+    </div>
+  </section>
+
+  <script>
+    // ========= Config =========
+    const BASE_URL = "http://127.0.0.1:5000"; // p.ej. "http://localhost:5000" si el backend está en otro puerto/origen
+
+    // ========= Estado =========
+    let currentRole = null;
+    let inFlight = null; // AbortController para cancelar requests
+    const roleLabels = {
+      t1: "💡 Finanzas Personales",
+      t2: "📈 Mercados Financieros",
+      t3: "🏠 Bienes Reales y Alternativos",
+    };
+
+    // ========= Tema (persistente) =========
+    const themeBtn = document.getElementById("themeBtn");
+    function applyTheme(t) {
+      const root = document.documentElement;
+      if (t === "light") root.classList.remove("dark");
+      else root.classList.add("dark");
+      localStorage.setItem("theme", t);
+      themeBtn.textContent = t === "light" ? "Tema oscuro" : "Tema claro";
+    }
+    const savedTheme = localStorage.getItem("theme") || "dark";
+    applyTheme(savedTheme);
+    themeBtn.onclick = () => applyTheme(document.documentElement.classList.contains("dark") ? "light" : "dark");
+
+    // ========= Utiles =========
+    function $(id) { return document.getElementById(id); }
+    function nowTime() {
+      // Hora local del navegador (en Madrid será la local del usuario si está allí)
+      const d = new Date();
+      return d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    }
+    function addMessage(who, text) {
+      const wrap = document.createElement("div");
+      wrap.className = `flex ${who === "user" ? "justify-end" : "justify-start"}`;
+
+      const bubble = document.createElement("div");
+      bubble.className = `bubble rounded-2xl px-4 py-3 text-sm shadow max-w-[85%] ${
+        who === "user"
+          ? "bg-blue-600 text-white"
+          : "bg-white text-zinc-900 dark:bg-zinc-900 dark:text-zinc-100 md"
+      }`;
+
+      // Renderizado Markdown solo para asistente
+      bubble.innerHTML = (who === "assistant") ? marked.parse(text) : escapeHtml(text);
+      // timestamp
+      const time = document.createElement("span");
+      time.className = "timechip opacity-70";
+      time.textContent = nowTime();
+      bubble.appendChild(time);
+
+      wrap.appendChild(bubble);
+      $("messages").appendChild(wrap);
+      wrap.scrollIntoView({ behavior: "smooth" });
+    }
+
+    function escapeHtml(str) {
+      return str.replace(/[&<>'\"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]));
+    }
+
+    function setRole(role) {
+      currentRole = role;
+      $("home").classList.add("hidden");
+      $("chat").classList.remove("hidden");
+      $("messages").innerHTML = "";
+      $("roleBadge").textContent = roleLabels[role];
+      addMessage("assistant", `Has elegido **${roleLabels[role]}**. ¿En qué te ayudo?`);
+    }
+
+    function goHome() {
+      $("chat").classList.add("hidden");
+      $("home").classList.remove("hidden");
+      $("messages").innerHTML = "";
+      currentRole = null;
+    }
+
+    async function ask(role, question) {
+      if (inFlight) inFlight.abort();
+      inFlight = new AbortController();
+      const t0 = performance.now();
+      const url = `${BASE_URL}${BASE_URL.endsWith("/")||BASE_URL==="" ? "" : "/"}${role}`;
+
+      const res = await fetch(url, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ question }),
+        signal: inFlight.signal,
+      });
+      const ms = Math.round(performance.now() - t0);
+      $("latency").textContent = `⏱️ ${ms} ms`;
+
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      return res.json();
+    }
+
+    // ========= Eventos UI =========
+    // Elegir rol
+    document.querySelectorAll('[data-role]').forEach(btn => {
+      btn.addEventListener('click', () => setRole(btn.getAttribute('data-role')));
+    });
+
+    // Volver
+    $("backBtn").onclick = goHome;
+
+    // Borrar chat
+    $("clearBtn").onclick = () => { $("messages").innerHTML = ""; };
+
+    // Enviar
+    $("chatForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const question = $("input").value.trim();
+      if (!question || !currentRole) return;
+      $("input").value = "";
+      addMessage("user", question);
+
+      // Indicador de “pensando…”
+      const thinking = document.createElement("div");
+      thinking.className = "text-sm opacity-70 px-4";
+      thinking.textContent = "pensando…";
+      $("messages").appendChild(thinking);
+      thinking.scrollIntoView({ behavior: "smooth" });
+
+      try {
+        const data = await ask(currentRole, question);
+        thinking.remove();
+        addMessage("assistant", data?.response || "(sin respuesta)");
+      } catch (err) {
+        thinking.remove();
+        addMessage("assistant", "Error al conectar con el servidor: " + err.message);
+      }
+    });
+  </script>
+</body>
+</html>
