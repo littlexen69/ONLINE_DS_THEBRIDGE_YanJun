@@ -50,7 +50,7 @@ def limpieza_phishing(dict):
     ]
 
     cur.executemany("""
-        INSERT INTO data_app (type, indicators, severity, date, time)
+        INSERT INTO logs (type, indicators, severity, date, time)
         VALUES (%(type)s, %(indicators)s, %(severity)s, %(date)s, %(time)s)
     """, records)
     conn.commit()
